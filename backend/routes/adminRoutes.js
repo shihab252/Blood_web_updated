@@ -4,7 +4,8 @@ import adminMiddleware from "../middleware/adminMiddleware.js";
 import { 
   getAllUsers, 
   toggleSuspendUser, 
-  getAllRequests 
+  getAllRequests,
+  deleteRequest // <--- Import this
 } from "../controllers/adminController.js";
 
 const router = express.Router();
@@ -13,5 +14,8 @@ const router = express.Router();
 router.get("/users", authMiddleware, adminMiddleware, getAllUsers);
 router.put("/users/:id/toggle-suspend", authMiddleware, adminMiddleware, toggleSuspendUser);
 router.get("/requests", authMiddleware, adminMiddleware, getAllRequests);
+
+// NEW ROUTE
+router.delete("/requests/:id", authMiddleware, adminMiddleware, deleteRequest);
 
 export default router;

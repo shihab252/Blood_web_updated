@@ -30,6 +30,8 @@ export default function Navbar() {
     navigate(path);
   };
 
+  const isAdmin = user?.role === "admin";
+
   return (
     <nav className="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50 font-sans">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -43,12 +45,17 @@ export default function Navbar() {
             <i className="fas fa-heartbeat"></i>
           </span>
           BloodLink
+          {isAdmin && (
+            <span className="ml-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-white tracking-wider uppercase">
+              Admin
+            </span>
+          )}
         </Link>
 
         {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center gap-8">
 
-          {/* HOME */}
+          {/* SHARED LINKS */}
           <Link
             to="/"
             className={`font-semibold transition-colors ${
@@ -58,42 +65,61 @@ export default function Navbar() {
             Home
           </Link>
 
-          {/* POST REQUEST (Protected) */}
-          <button
-            onClick={() => goProtected("/create-request")}
-            className={`font-semibold transition-colors ${
-              location.pathname === "/create-request"
-                ? "text-red-600"
-                : "text-slate-600 hover:text-red-600"
-            }`}
-          >
-            Post Request
-          </button>
+          {/* ADMIN SPECIFIC NAVIGATION */}
+          {isAdmin ? (
+            <>
+              <Link
+                to="/admin"
+                className={`font-bold transition-colors flex items-center gap-2 ${
+                  location.pathname === "/admin" ? "text-red-600" : "text-slate-600 hover:text-red-600"
+                }`}
+              >
+                <i className="fas fa-chart-line text-sm"></i> Dashboard
+              </Link>
+              
+              <Link
+                to="/find-donors"
+                className={`font-semibold transition-colors ${
+                  location.pathname === "/find-donors" ? "text-red-600" : "text-slate-600 hover:text-red-600"
+                }`}
+              >
+                Donor Search
+              </Link>
+            </>
+          ) : (
+            /* USER SPECIFIC NAVIGATION */
+            <>
+              <Link
+                to="/find-donors"
+                className={`font-semibold transition-colors ${
+                  location.pathname === "/find-donors" ? "text-red-600" : "text-slate-600 hover:text-red-600"
+                }`}
+              >
+                Find Donors
+              </Link>
 
-          {/* NEARBY REQUESTS */}
-          <Link
-            to="/requests"
-            className={`font-semibold transition-colors ${
-              location.pathname === "/requests"
-                ? "text-red-600"
-                : "text-slate-600 hover:text-red-600"
-            }`}
-          >
-            Nearby Requests
-          </Link>
+              <button
+                onClick={() => goProtected("/create-request")}
+                className={`font-semibold transition-colors ${
+                  location.pathname === "/create-request"
+                    ? "text-red-600"
+                    : "text-slate-600 hover:text-red-600"
+                }`}
+              >
+                Post Request
+              </button>
 
-          {/* ADMIN PANEL */}
-          {user?.role === "admin" && (
-            <Link
-              to="/admin"
-              className={`font-semibold transition-colors ${
-                location.pathname === "/admin"
-                  ? "text-red-600"
-                  : "text-slate-600 hover:text-red-600"
-              }`}
-            >
-              Admin Panel
-            </Link>
+              <Link
+                to="/requests"
+                className={`font-semibold transition-colors ${
+                  location.pathname === "/requests"
+                    ? "text-red-600"
+                    : "text-slate-600 hover:text-red-600"
+                }`}
+              >
+                Nearby Requests
+              </Link>
+            </>
           )}
 
           {/* AUTH HANDLING */}
@@ -113,17 +139,19 @@ export default function Navbar() {
           ) : (
             <div className="flex items-center gap-6 ml-4 relative">
 
-              {/* DASHBOARD */}
-              <button
-                onClick={() => goProtected("/dashboard")}
-                className={`font-semibold transition-colors ${
-                  location.pathname === "/dashboard"
-                    ? "text-red-600"
-                    : "text-slate-600 hover:text-red-600"
-                }`}
-              >
-                Dashboard
-              </button>
+              {/* DASHBOARD LINK (Users only, Admins use the specific Admin link above) */}
+              {!isAdmin && (
+                <button
+                  onClick={() => goProtected("/dashboard")}
+                  className={`font-semibold transition-colors ${
+                    location.pathname === "/dashboard"
+                      ? "text-red-600"
+                      : "text-slate-600 hover:text-red-600"
+                  }`}
+                >
+                  Dashboard
+                </button>
+              )}
 
               {/* PROFILE DROPDOWN */}
               <div
@@ -132,7 +160,7 @@ export default function Navbar() {
               >
                 <div className="hidden lg:block text-right">
                   <p className="text-sm font-bold">{user.name}</p>
-                  <p className="text-xs text-slate-500">{user.role || "User"}</p>
+                  <p className="text-xs text-slate-500">{isAdmin ? "Administrator" : "Donor"}</p>
                 </div>
 
                 <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 overflow-hidden">
@@ -150,7 +178,20 @@ export default function Navbar() {
               </div>
 
               {dropdownOpen && (
-                <div className="absolute top-16 right-0 bg-white shadow-lg border border-slate-200 rounded-xl w-48 py-2 z-50">
+                <div className="absolute top-16 right-0 bg-white shadow-lg border border-slate-200 rounded-xl w-56 py-2 z-50 overflow-hidden">
+                  
+                  {/* ADMIN EXCLUSIVE TOP LINKS */}
+                  {isAdmin && (
+                    <div className="bg-slate-50 border-b border-slate-100 pb-2 mb-2">
+                      <p className="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Admin Controls</p>
+                      <Link
+                        to="/admin"
+                        className="block px-4 py-2 text-slate-800 hover:bg-slate-200 font-bold"
+                      >
+                        <i className="fas fa-rocket mr-2 text-red-600"></i> Admin Panel
+                      </Link>
+                    </div>
+                  )}
 
                   <Link
                     to="/profile"
@@ -158,35 +199,24 @@ export default function Navbar() {
                   >
                     My Profile
                   </Link>
-
-                  <Link
-                    to="/dashboard"
-                    className="block px-4 py-2 text-slate-700 hover:bg-slate-100 font-medium"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    to="/my-requests"
-                    className="block px-4 py-2 text-slate-700 hover:bg-slate-100 font-medium"
-                  >
-                    My Requests
-                  </Link>
-
-                  {user.role === "admin" && (
+                  
+                  {!isAdmin && (
                     <Link
-                      to="/admin"
+                      to="/my-requests"
                       className="block px-4 py-2 text-slate-700 hover:bg-slate-100 font-medium"
                     >
-                      Admin Panel
+                      My Requests
                     </Link>
                   )}
 
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 font-semibold"
-                  >
-                    Logout
-                  </button>
+                  <div className="border-t border-slate-100 mt-2 pt-2">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 font-semibold flex items-center gap-2"
+                    >
+                      <i className="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                  </div>
 
                 </div>
               )}
@@ -224,21 +254,30 @@ export default function Navbar() {
               Home
             </Link>
 
-            <button
-              onClick={() => goProtected("/create-request")}
-              className="text-left text-lg font-semibold text-slate-800"
-            >
-              Post Request
-            </button>
-
-            <Link to="/requests" className="text-lg font-semibold text-slate-800">
-              Nearby Requests
-            </Link>
-
-            {user?.role === "admin" && (
-              <Link to="/admin" className="text-lg font-semibold text-red-600">
-                Admin Panel
-              </Link>
+            {isAdmin ? (
+              <>
+                <Link to="/admin" className="text-lg font-bold text-red-600 flex items-center gap-2">
+                  <i className="fas fa-chart-pie"></i> Admin Dashboard
+                </Link>
+                <Link to="/find-donors" className="text-lg font-semibold text-slate-800">
+                  Donor Database
+                </Link>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => goProtected("/create-request")}
+                  className="text-left text-lg font-semibold text-slate-800"
+                >
+                  Post Request
+                </button>
+                <Link to="/find-donors" className="text-lg font-semibold text-slate-800">
+                  Find Donors
+                </Link>
+                <Link to="/requests" className="text-lg font-semibold text-slate-800">
+                  Nearby Requests
+                </Link>
+              </>
             )}
 
             {!user ? (
@@ -246,7 +285,6 @@ export default function Navbar() {
                 <Link to="/login" className="text-lg text-slate-600">
                   Login
                 </Link>
-
                 <Link
                   to="/register"
                   className="px-6 py-3 bg-red-600 text-white rounded-full font-bold shadow-md text-center"
@@ -255,18 +293,10 @@ export default function Navbar() {
                 </Link>
               </>
             ) : (
-              <>
-                <button
-                  onClick={() => goProtected("/dashboard")}
-                  className="text-left text-lg text-slate-800"
-                >
-                  Dashboard
-                </button>
-
-                <Link to="/profile" className="text-lg text-slate-800">
+              <div className="border-t border-slate-100 pt-6 mt-auto">
+                <Link to="/profile" className="text-lg text-slate-800 mb-4 block">
                   My Profile
                 </Link>
-
                 <button
                   onClick={() => {
                     handleLogout();
@@ -276,7 +306,7 @@ export default function Navbar() {
                 >
                   Logout
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>

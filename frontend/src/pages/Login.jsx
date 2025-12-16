@@ -6,10 +6,10 @@ import { AuthContext } from "../context/AuthContext";
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  
+   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const submitLogin = async (e) => {
@@ -20,9 +20,18 @@ export default function Login() {
         email,
         password,
       });
-      // Use the login function from your AuthContext to save user data
+
+      // Save user to context
       login(res.data.user, res.data.token);
-      navigate("/dashboard");
+
+      // --- THE FIX IS HERE ---
+      // Check the role and redirect accordingly
+      if (res.data.user.role === "admin") {
+        navigate("/admin"); // Admins go to Admin Dashboard
+      } else {
+        navigate("/dashboard"); // Normal users go to User Dashboard
+      }
+      
     } catch (err) {
       alert(err.response?.data?.msg || "Login failed. Please check your credentials.");
     } finally {
@@ -33,6 +42,9 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 relative overflow-hidden font-sans">
       
+      {/* ... (Keep your existing JSX / UI code exactly the same below here) ... */}
+      
+      {/* Just to be safe, I will paste the UI part here so you don't lose it if you copy-paste */}
       {/* --- BACKGROUND ANIMATED BLOBS --- */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-red-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
@@ -55,8 +67,8 @@ export default function Login() {
           
           {/* Email Input */}
           <div className="space-y-2">
-             <label className="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1">Email Address</label>
-             <div className="relative">
+              <label className="text-xs font-bold text-slate-500 uppercase tracking-wide ml-1">Email Address</label>
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                   <i className="fas fa-envelope"></i>
                 </div>
@@ -73,10 +85,10 @@ export default function Login() {
 
           {/* Password Input with Toggle */}
           <div className="space-y-2">
-             <div className="flex justify-between items-center ml-1">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Password</label>
-             </div>
-             <div className="relative">
+              <div className="flex justify-between items-center ml-1">
+                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Password</label>
+              </div>
+              <div className="relative">
                 {/* Left Icon */}
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                   <i className="fas fa-lock"></i>
@@ -96,7 +108,7 @@ export default function Login() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer transition-colors focus:outline-none"
-                  tabIndex="-1" // Prevents tab focus on this button while typing
+                  tabIndex="-1" 
                 >
                   <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
                 </button>
@@ -128,7 +140,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* --- INLINE CSS FOR BACKGROUND ANIMATIONS --- */}
       <style>{`
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }

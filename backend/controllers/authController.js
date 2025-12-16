@@ -41,7 +41,7 @@ export const login = async (req, res) => {
       return res.status(403).json({ msg: "This account is suspended" });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ msg: "Invalid password" });
+    if (!match) return res.status(400).json({ msg: "Invalid password Or Email" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",

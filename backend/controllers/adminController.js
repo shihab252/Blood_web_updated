@@ -26,3 +26,14 @@ export const getAllRequests = async (req, res) => {
     res.json({ requests });
   } catch (err) { res.status(500).json({ msg: err.message }); }
 };
+export const deleteRequest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Request = (await import("../models/Request.js")).default; // Dynamic import to avoid circular dep issues if any
+    
+    await Request.findByIdAndDelete(id);
+    res.json({ msg: "Request deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
