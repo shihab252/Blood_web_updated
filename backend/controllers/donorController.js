@@ -9,7 +9,7 @@ export const searchDonors = async (req, res) => {
     let query = { 
       role: "user", 
       isSuspended: false,
-      _id: { $ne: currentUserId } // <--- CRITICAL FIX: Exclude myself
+      _id: { $ne: currentUserId }
     };
 
     if (bloodGroup) query.bloodGroup = bloodGroup;
