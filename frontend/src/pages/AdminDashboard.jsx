@@ -98,8 +98,8 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
       const [usersRes, requestsRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/admin/users", { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get("http://localhost:5000/api/admin/requests", { headers: { Authorization: `Bearer ${token}` } })
+        axios.get("https://blood-web-backend.onrender.com/api/admin/users", { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get("https://blood-web-backend.onrender.com/api/admin/requests", { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       const userList = usersRes.data.users;
