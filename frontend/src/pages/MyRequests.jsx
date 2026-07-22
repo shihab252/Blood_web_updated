@@ -100,7 +100,7 @@ export default function MyRequests() {
                           >
                             <div className="w-12 h-12 rounded-full bg-white overflow-hidden border-2 border-white shadow-sm">
                               <img
-                                src={donor?.profileImage ? `http://localhost:5000${donor.profileImage}` : "https://via.placeholder.com/150"}
+                                src={donor?.profileImage ? `https://blood-web-backend.onrender.com${donor.profileImage}` : "https://via.placeholder.com/150"}
                                 className="w-full h-full object-cover"
                                 alt="donor"
                               />
