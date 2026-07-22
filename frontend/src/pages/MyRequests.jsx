@@ -25,7 +25,7 @@ export default function MyRequests() {
       // Only show big loading spinner on the VERY first load
       if (!isBackground) setLoading(true);
       
-      const res = await axios.get("http://localhost:5000/api/requests/my", {
+      const res = await axios.get("https://blood-web-backend.onrender.com/api/requests/my", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMyRequests(res.data.requests || []);
