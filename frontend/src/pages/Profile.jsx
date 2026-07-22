@@ -25,7 +25,7 @@ export default function Profile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/profile", {
+        const res = await axios.get("https://blood-web-backend.onrender.com/api/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -66,7 +66,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/profile/upload-image",
+        "https://blood-web-backend.onrender.com/api/profile/upload-image",
         formData,
         {
           headers: {
@@ -94,7 +94,7 @@ export default function Profile() {
       const newStatus = !user.availability; 
       
       const res = await axios.put(
-        "http://localhost:5000/api/profile/availability",
+        "https://blood-web-backend.onrender.com/api/profile/availability",
         { availability: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -111,7 +111,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:5000/api/profile",
+        "https://blood-web-backend.onrender.com/api/profile",
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -132,7 +132,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:5000/api/profile/last-donation",
+        "https://blood-web-backend.onrender.com/api/profile/last-donation",
         { lastDonation: lastDonationDate },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -171,7 +171,7 @@ export default function Profile() {
             <div className="relative w-32 h-32 mx-auto mb-6 group">
               <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
-                  src={user.profileImage ? `http://localhost:5000${user.profileImage}` : `https://ui-avatars.com/api/?name=${user.name}&background=fee2e2&color=ef4444`}
+                  src={user.profileImage ? `https://blood-web-backend.onrender.com${user.profileImage}` : `https://ui-avatars.com/api/?name=${user.name}&background=fee2e2&color=ef4444`}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
