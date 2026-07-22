@@ -29,7 +29,7 @@ export default function Requests() {
     try {
       setLoading(true);
 
-      let url = "http://localhost:5000/api/requests/active?";
+      let url = "https://blood-web-backend.onrender.com/api/requests/active?";
       if (filterBlood) url += `bloodGroup=${encodeURIComponent(filterBlood)}&`;
       if (filterDistrict) url += `district=${encodeURIComponent(filterDistrict)}`;
 
@@ -76,14 +76,14 @@ export default function Requests() {
     try {
       if (modal.type === "accept") {
         await axios.post(
-          `http://localhost:5000/api/requests/${modal.reqId}/accept`,
+          `https://blood-web-backend.onrender.com/api/requests/${modal.reqId}/accept`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
         // Optional: Toast notification here
       } else if (modal.type === "complete") {
         await axios.put(
-          `http://localhost:5000/api/requests/${modal.reqId}/complete`,
+          `https://blood-web-backend.onrender.com/api/requests/${modal.reqId}/complete`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -103,7 +103,7 @@ export default function Requests() {
     if (!token) return;
     try {
       await axios.post(
-        `http://localhost:5000/api/requests/${requestId}/reject`,
+        `https://blood-web-backend.onrender.com/api/requests/${requestId}/reject`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
