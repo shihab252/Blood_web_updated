@@ -29,9 +29,9 @@ export default function Dashboard() {
       setLoading(true);
       
       const [statsRes, myRequestsRes, activeRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/requests/stats", { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get("http://localhost:5000/api/requests/my", { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get("http://localhost:5000/api/requests/active") 
+        axios.get("https://blood-web-backend.onrender.com/api/requests/stats", { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get("https://blood-web-backend.onrender.com/api/requests/my", { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get("https://blood-web-backend.onrender.com/api/requests/active") 
       ]);
 
       setStats({
