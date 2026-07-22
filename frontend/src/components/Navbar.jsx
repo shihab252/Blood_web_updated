@@ -167,7 +167,7 @@ export default function Navbar() {
                   <img
                     src={
                       user.profileImage
-                        ? `http://localhost:5000${user.profileImage}`
+                        ? `https://blood-web-backend.onrender.com${user.profileImage}`
                         : `https://ui-avatars.com/api/?name=${user.name}&background=fee2e2&color=ef4444`
                     }
                     className="w-full h-full object-cover"
