@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }) => {
     const user = JSON.parse(localStorage.getItem("user"));
     
     // Initialize Socket connection
-    const newSocket = io("http://localhost:5000"); // Backend URL
+    const newSocket = io("https://blood-web-backend.onrender.com"); // Backend URL
     setSocket(newSocket);
 
     // Register the user ID for targeted notifications
