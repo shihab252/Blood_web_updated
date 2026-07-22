@@ -31,7 +31,7 @@ export default function FindDonors() {
         area,
       }).toString();
 
-      const res = await axios.get(`http://localhost:5000/api/donor/search?${query}`, {
+      const res = await axios.get(`https://blood-web-backend.onrender.com/api/donor/search?${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -172,7 +172,7 @@ export default function FindDonors() {
                   <div className="relative">
                     <div className="w-20 h-20 rounded-[1.2rem] overflow-hidden shadow-md border-2 border-white group-hover:scale-105 transition-transform">
                       <img 
-                        src={donor.profileImage ? `http://localhost:5000${donor.profileImage}` : `https://ui-avatars.com/api/?name=${donor.name}&background=fee2e2&color=ef4444`} 
+                        src={donor.profileImage ? `https://blood-web-backend.onrender.com${donor.profileImage}` : `https://ui-avatars.com/api/?name=${donor.name}&background=fee2e2&color=ef4444`} 
                         className={`w-full h-full object-cover ${!donor.availability && 'grayscale contrast-75'}`}
                         alt={donor.name} 
                       />
